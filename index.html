@@ -39,14 +39,23 @@
       const urlObj = new URL(url);
       const params = new URLSearchParams(urlObj.search);
 
-      const videoUrl = params.get('video');
-      const subtitleUrl = params.get('subtitle');
+      let videoUrl = params.get('video');
+      let subtitleUrl = params.get('subtitle');
+
+      if (videoUrl) {
+        videoUrl = videoUrl.replace(/ /g, '+');
+      }
+
+      if (subtitleUrl) {
+        subtitleUrl = subtitleUrl.replace(/ /g, '+');
+      }
 
       return {
         videoUrl,
         subtitleUrl
       };
     }
+
 
     const {
       videoUrl,
@@ -62,6 +71,7 @@
     }
 
     function isHLS(url) {
+      console.log(url);
       return typeof url === "string" && url.trim().toLowerCase().endsWith(".m3u8");
     }
 
@@ -73,7 +83,9 @@
       container.appendChild(videoElement);
 
       if (Hls.isSupported()) {
-        const hls = new Hls();
+        const hls = new Hls({
+          debug: true,
+        });
         hls.loadSource(videoUrl);
         hls.attachMedia(videoElement);
         hls.on(Hls.Events.MEDIA_ATTACHED, function() {
