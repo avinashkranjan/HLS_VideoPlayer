@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anime Player</title>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+  <iframe id="media-frame" allow="autoplay; fullscreen" allowfullscreen></iframe>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const link = params.get("link");
+
+    if (link) {
+      const iframe = document.getElementById("media-frame");
+      iframe.src = decodeURIComponent(link);
+    } else {
+      document.body.innerHTML = "<h2 style='text-align:center;margin-top:20px;'>No link provided in query.</h2>";
+    }
+  </script>
+</body>
+
+</html>
